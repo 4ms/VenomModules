@@ -616,19 +616,19 @@ struct DigitalDisplay : Widget {
   void draw(const DrawArgs& args) override {
     // Background
     nvgBeginPath(args.vg);
-#if defined(METAMODULE)
     nvgRect(args.vg, 0, 0, box.size.x, box.size.y);
-#else
     nvgRoundedRect(args.vg, 0, 0, box.size.x, box.size.y, 2);
-#endif
     nvgFillColor(args.vg, nvgRGB(0x19, 0x19, 0x19));
     nvgFill(args.vg);
 
     prepareFont(args);
 
     // Background text
+	// Don't draw background text on MM
+#if !defined(METAMODULE)
     nvgFillColor(args.vg, bgColor);
     nvgText(args.vg, textPos.x, textPos.y, bgText.c_str(), NULL);
+#endif
   }
 
   void drawLayer(const DrawArgs& args, int layer) override {
