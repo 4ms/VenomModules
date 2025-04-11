@@ -73,12 +73,10 @@
     {
       "slug": "VCAMix4Stereo",
       "name": "VCA Mix 4 Stereo"
-     ]
     },
     {
       "slug": "Oscillator",
       "name": "VCO Lab"
-     ]
     },
     {
       "slug": "VCOUnit",
@@ -91,6 +89,7 @@
     {
       "slug": "WinComp",
       "name": "WinComp"
+	}
     ]
 }
 
