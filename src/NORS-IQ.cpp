@@ -1,13 +1,16 @@
 // Venom Modules (c) 2023, 2024 Dave Benham
 // Licensed under GNU GPLv3
 
-#include "plugin.hpp"
+#include "Venom.hpp"
+#include <float.h>
 #include <string.h>
 
 #define LIGHT_ON 1.f
 #define LIGHT_OFF 0.02f
 #define INTVL_CNT 13
 #define RATIO_UNIT HZ_UNIT
+
+namespace Venom {
 
 struct NORS_IQ : VenomModule {
   
@@ -79,7 +82,6 @@ struct NORS_IQ : VenomModule {
   std::string intvlStr(float val, bool display) {
     constexpr size_t sz = 32;
     char buf[sz];
-
     switch (static_cast<int>(params[INTVL_UNIT_PARAM].getValue())) {
       case RATIO_UNIT:
         snprintf(buf, sz, display ? "%g:1" : "%g", pow(2.f, val));
@@ -128,7 +130,6 @@ struct NORS_IQ : VenomModule {
   std::string rootStr(float val, bool display) {
     constexpr size_t sz = 32;
     char buf[sz];
-
     switch (static_cast<int>(params[ROOT_UNIT_PARAM].getValue())) {
       case HZ_UNIT:
         snprintf(buf, sz, display ? "%g Hz" : "%g", pow(2.f, val + log2(dsp::FREQ_C4)));
@@ -140,7 +141,6 @@ struct NORS_IQ : VenomModule {
       default:
         snprintf(buf, sz, display ? "%g V" : "%g", val);
     }
-
     return std::string(buf, sz);
   };
 
@@ -513,4 +513,6 @@ struct NORS_IQWidget : VenomWidget {
 
 };
 
-Model* modelNORS_IQ = createModel<NORS_IQ, NORS_IQWidget>("NORS_IQ");
+}
+
+Model* modelVenomNORS_IQ = createModel<Venom::NORS_IQ, Venom::NORS_IQWidget>("NORS_IQ");

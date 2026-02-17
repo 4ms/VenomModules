@@ -2,12 +2,14 @@
 // Licensed under GNU GPLv3
 
 #include "Filter.hpp"
-#include "plugin.hpp"
+#include "Venom.hpp"
 
 #define CHANNEL_COUNT 9
 #define LIGHT_OFF 0.02f
 #define LIGHT_DIM 0.1f
 #define LIGHT_FADE 5e-6f
+
+namespace Venom {
 
 struct Logic : VenomModule {
   enum ParamId {
@@ -48,7 +50,7 @@ struct Logic : VenomModule {
     OP_XNOR_ODD
   };
   
-  int oversample = -1;
+  int oversample = -1, sampleRate = 0;
   std::vector<int> oversampleValues = {1,2,4,8,16,32};
   std::vector<float> highValues = {1.f, 5.f, 10.f, 1.f, 5.f, 10.f};
   std::vector<float> lowValues = {0.f, 0.f, 0.f, -1.f, -5.f, -10.f};
@@ -114,6 +116,14 @@ struct Logic : VenomModule {
     if (oversample != oversampleValues[params[OVER_PARAM].getValue()]) {
       oversample = oversampleValues[params[OVER_PARAM].getValue()];
       setOversample();
+      sampleRate = 0;
+    }
+    if (sampleRate != args.sampleRate) {
+      sampleRate = args.sampleRate;
+      for (int c=0; c<CHANNEL_COUNT; c++) {
+        for (int i=0; i<4; i++)
+          dcBlock[c][i].init(sampleRate, oversample);
+      }
     }
 
     int channelMap[CHANNEL_COUNT];
@@ -250,7 +260,7 @@ struct Logic : VenomModule {
       for (int c=0; c<endChannel; c++) {
         for (int p=0, pi=0; p<polyCount[c]; p+=4, pi++) {
           if (dc) {
-            outVal[c][pi] = dcBlock[c][pi].process(outVal[c][pi]/*, oversample*/);
+            outVal[c][pi] = dcBlock[c][pi].process(outVal[c][pi]);
           }  
           outputs[GATE_OUTPUT+c].setVoltageSimd(outVal[c][pi], p);
         }
@@ -359,5 +369,6 @@ struct LogicWidget : VenomWidget {
 
 };
 
+}
 
-Model* modelLogic = createModel<Logic, LogicWidget>("Logic");
+Model* modelVenomLogic = createModel<Venom::Logic, Venom::LogicWidget>("Logic");

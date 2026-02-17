@@ -1,13 +1,16 @@
 // Venom Modules (c) 2023, 2024 Dave Benham
 // Licensed under GNU GPLv3
 
-#include "plugin.hpp"
+#include "Venom.hpp"
 #include "CloneModule.hpp"
+
+namespace Venom {
 
 struct CloneMerge : CloneModuleBase {
 
   enum ParamId {
     CLONE_PARAM,
+    GROUP_PARAM,
     PARAMS_LEN
   };
   enum InputId {
@@ -32,6 +35,7 @@ struct CloneMerge : CloneModuleBase {
       configInput(MONO_INPUTS+i, string::f("Mono %d", i + 1));
       configLight(MONO_LIGHTS+i*2, string::f("Input %d cloned indicator", i + 1))->description = "yellow = OK, red = Error";
     }
+    configSwitch<FixedSwitchQuantity>(GROUP_PARAM, 0.f, 1.f, 0.f, "Output grouping", {"Input channel", "Input set"});
     configOutput(POLY_OUTPUT, "Poly");
     lightDivider.setDivision(44);
   }
@@ -52,13 +56,22 @@ struct CloneMerge : CloneModuleBase {
     }
     int goodIns = ins > maxIns ? maxIns : ins;
 
-    int channel=0;
-    for (int i=0; i<goodIns; i+=1) {
-      float val = inputs[MONO_INPUTS + i].getVoltage();
-      for (int c=0; c<clones; c++)
-        outputs[POLY_OUTPUT].setVoltage(val, channel++);
+    if (params[GROUP_PARAM].getValue()){ //group by input set
+      for (int i=0; i<goodIns; i++) {
+        float val = inputs[MONO_INPUTS+i].getVoltage();
+        for (int c=0, o=i; c<clones; c++, o+=goodIns)
+          outputs[POLY_OUTPUT].setVoltage(val, o);
+      }
     }
-    outputs[POLY_OUTPUT].setChannels(channel);
+    else{ // group by input channel
+      for (int i=0, o=0; i<goodIns; i+=1) {
+        float val = inputs[MONO_INPUTS + i].getVoltage();
+        for (int c=0; c<clones; c++)
+          outputs[POLY_OUTPUT].setVoltage(val, o++);
+      }
+    }
+    outputs[POLY_OUTPUT].setChannels(goodIns * clones);
+    
     processExpander(clones, goodIns);
     
     if (lightDivider.process()) {
@@ -88,10 +101,15 @@ struct CloneMergeWidget : CloneModuleWidget {
       addInput(createInputCentered<MonoPort>(Vec(x,y), module, CloneMerge::MONO_INPUTS + i));
       addChild(createLightCentered<SmallLight<YellowRedLight<>>>(Vec(x+dy*0.5f, y-dy*0.3f), module, CloneMerge::MONO_LIGHTS + i*2));
     }
+
+    addParam(createLockableParamCentered<GroupSwitch>(Vec(6.f,311.5f), module, CloneMerge::GROUP_PARAM));
+
     y+=dy*0.33f;
     addOutput(createOutputCentered<PolyPort>(Vec(x,y), module, CloneMerge::POLY_OUTPUT));
   }
 
 };
 
-Model* modelCloneMerge = createModel<CloneMerge, CloneMergeWidget>("CloneMerge");
+}
+
+Model* modelVenomCloneMerge = createModel<Venom::CloneMerge, Venom::CloneMergeWidget>("CloneMerge");

@@ -1,10 +1,12 @@
 // Venom Modules (c) 2023, 2024 Dave Benham
 // Licensed under GNU GPLv3
 
-#include "plugin.hpp"
+#include "Venom.hpp"
 #include "Filter.hpp"
 #include "math.hpp"
 #include <float.h>
+
+namespace Venom {
 
 struct PolyFade : VenomModule {
 
@@ -59,6 +61,7 @@ struct PolyFade : VenomModule {
   };
   
   bool resetIfOff = true;
+  bool minimizeChannels = true, oldMinimizeChannels = true;
   float phasor = 0.f;
   float slewRate[4]{0.f, 333.f, 167.f, 100.f};
   float curSlew = -1.f;
@@ -66,7 +69,7 @@ struct PolyFade : VenomModule {
   float baseFreq = dsp::FREQ_C4/128.f;
   dsp::SchmittTrigger resetTrig;
   dsp::SlewLimiter slew;
-  int channels=0, startChannel=0, oldChan=0, oldStart=0;
+  int channels=0, inChannels=0, oldInChan=0, outChannels=0, startChannel=0, oldChan=0, oldOutChan=0, oldStart=0;
   float outSave[16]{}; // saved channel levels
   float fadeRemaining = 0.f; // time remaining to crossfade from old channel levels to new channel levels
   float fadeTime = 0.002f;
@@ -168,13 +171,20 @@ struct PolyFade : VenomModule {
 
     if (fadeRemaining <= 0.f) {
       fadeAmt = 0.f;
-      channels = static_cast<int>(params[CHAN_PARAM].getValue());
-      if (!channels)
-        channels = std::max(inputs[POLY_INPUT].getChannels(), 1);
       startChannel = static_cast<int>(params[START_PARAM].getValue());
-      if (channels != oldChan || startChannel != oldStart) {
-        for (int i=oldChan; i<channels; i++)
+      channels = static_cast<int>(params[CHAN_PARAM].getValue());
+      inChannels = std::max({channels, inputs[POLY_INPUT].getChannels(), startChannel+1});
+      if (!channels)
+        channels = inChannels;
+      outChannels = minimizeChannels ? channels : inChannels;
+      if (channels != oldChan || startChannel != oldStart || outChannels != oldOutChan || minimizeChannels != oldMinimizeChannels || inChannels != oldInChan) {
+        for (int i=oldOutChan; i<outChannels; i++) {
           outSave[i] = 0.f;
+        }
+        for (int i=inChannels; i<16; i++){
+          lights[CHAN_LIGHT+i].setBrightness(0.f);
+          lights[CHAN_ACTIVE_LIGHT+i].setBrightness(0.f);
+        }
         fadeRemaining = fadeTime - args.sampleTime;
       }
     }
@@ -209,7 +219,6 @@ struct PolyFade : VenomModule {
     if (inputs[FALL_INPUT].isConnected())
       fallShape = clamp(fallShape + inputs[FALL_INPUT].getVoltage() * params[FALL_AMT_PARAM].getValue() / 5, -1.f, 1.f);
     fallShape *= -0.9f;  
-    bool activeLight[16]{};
     float out = 0.f;
     float sum = 0.f;
     float gate = 0.f;
@@ -259,8 +268,8 @@ struct PolyFade : VenomModule {
     if (tempPhasor > 1 + start)
       tempPhasor -= 1.f;
     
-    for (int i=0; i<channels; i++) {
-      if (tempPhasor < start){            // pre rise
+    for (int i=0; i<inChannels; i++) {
+      if (i >= channels || tempPhasor < start){ // pre rise or unused
         out = 0.f;
         gate = 0.f;
       }
@@ -280,11 +289,11 @@ struct PolyFade : VenomModule {
         out = 0.f;
         gate = 0.f;
       }
-      int c = (i+startChannel)%16;
+      int c = (i+startChannel)%inChannels;
       lights[CHAN_LIGHT+c].setBrightnessSmooth(out, args.sampleTime);
-      lights[CHAN_ACTIVE_LIGHT+c].setBrightness(i==0 ? 1.f : 0.2f);
-      outputs[GATES_OUTPUT].setVoltage(gate, i);
-      outputs[ENV_OUTPUT].setVoltage(out*10.f, i);
+      lights[CHAN_ACTIVE_LIGHT+c].setBrightness(i==0 ? 1.f : i<channels ? 0.2f : 0.f);
+      outputs[GATES_OUTPUT].setVoltage(gate, minimizeChannels ? i : c);
+      outputs[ENV_OUTPUT].setVoltage(out*10.f, minimizeChannels ? i : c);
       out *= inputs[POLY_INPUT].getVoltage(c) * level;
       if (fadeAmt > 0.f){
         out += (outSave[i] - out) * fadeAmt;
@@ -294,39 +303,37 @@ struct PolyFade : VenomModule {
       else {
         outSave[i] = out;
       }
-      outputs[POLY_OUTPUT].setVoltage(out, i);
+      outputs[POLY_OUTPUT].setVoltage(out, minimizeChannels ? i : c);
       sum += out;
       tempPhasor -= chanWidth;
       if (tempPhasor < start)
         tempPhasor += 1.f;
     }
-    for (int c=0; c<16; c++) {
-      if (!activeLight[c]) {
-        lights[CHAN_LIGHT+c].setBrightnessSmooth(0.f, args.sampleTime);
-        lights[CHAN_ACTIVE_LIGHT+c].setBrightnessSmooth(0.f, args.sampleTime);
-      }
-    }
     if (fadeAmt > 0.f) {
       for (int i=channels; i<oldChan; i++) {
         out = outSave[i] * fadeAmt;
-        outputs[POLY_OUTPUT].setVoltage(out, i);
+        outputs[POLY_OUTPUT].setVoltage(out, minimizeChannels ? i : (i+startChannel)%16);
         sum += out;
       }
       outputs[POLY_OUTPUT].setChannels(std::max(channels, oldChan));
       if (fadeRemaining <= 0.f) {
         oldChan = channels;
         oldStart = startChannel;
+        oldInChan = inChannels;
+        oldOutChan = outChannels;
+        oldMinimizeChannels = minimizeChannels;
       }
     }
     else
-      outputs[POLY_OUTPUT].setChannels(channels);
+      outputs[POLY_OUTPUT].setChannels(outChannels);
     outputs[SUM_OUTPUT].setVoltage(sum);
-    outputs[GATES_OUTPUT].setChannels(channels);
-    outputs[ENV_OUTPUT].setChannels(channels);
+    outputs[GATES_OUTPUT].setChannels(outChannels);
+    outputs[ENV_OUTPUT].setChannels(outChannels);
   }
 
   json_t* dataToJson() override {
     json_t* rootJ = VenomModule::dataToJson();
+    json_object_set_new(rootJ, "minimizeChannels", json_boolean(minimizeChannels));
     json_object_set_new(rootJ, "resetIfOff", json_boolean(resetIfOff));
     return rootJ;
   }
@@ -336,6 +343,8 @@ struct PolyFade : VenomModule {
     json_t* val = json_object_get(rootJ, "resetIfOff");
     if (val)
       resetIfOff = json_boolean_value(val);
+    if((val = json_object_get(rootJ, "minimizeChannels")))
+      minimizeChannels = json_boolean_value(val);
   }
 
 };
@@ -421,10 +430,13 @@ struct PolyFadeWidget : VenomWidget {
   void appendContextMenu(Menu* menu) override {
     PolyFade* module = dynamic_cast<PolyFade*>(this->module);
     menu->addChild(new MenuSeparator);
-    menu->addChild(createBoolPtrMenuItem("Reset if direction off", "", &module->resetIfOff));
+    menu->addChild(createBoolPtrMenuItem("Minimize output channels", "", &module->minimizeChannels));
+    menu->addChild(createBoolPtrMenuItem("Reset on direction turning off", "", &module->resetIfOff));
     VenomWidget::appendContextMenu(menu);
   }
 
 };
 
-Model* modelPolyFade = createModel<PolyFade, PolyFadeWidget>("PolyFade");
+}
+
+Model* modelVenomPolyFade = createModel<Venom::PolyFade, Venom::PolyFadeWidget>("PolyFade");
