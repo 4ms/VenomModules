@@ -25,11 +25,14 @@ set(SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR})
 
 target_sources(Venom
     PRIVATE
+    ${SOURCE_DIR}/src/AD_ASR.cpp
     ${SOURCE_DIR}/src/BenjolinGatesExpander.cpp
     ${SOURCE_DIR}/src/BenjolinOsc.cpp
     ${SOURCE_DIR}/src/BenjolinVoltsExpander.cpp
     ${SOURCE_DIR}/src/BernoulliSwitch.cpp
     ${SOURCE_DIR}/src/BernoulliSwitchExpander.cpp
+    ${SOURCE_DIR}/src/Compare2.cpp
+    ${SOURCE_DIR}/src/CrossFade3D.cpp
     ${SOURCE_DIR}/src/HQ.cpp
     ${SOURCE_DIR}/src/Knob5.cpp
     ${SOURCE_DIR}/src/LinearBeats.cpp
@@ -48,17 +51,25 @@ target_sources(Venom
     ${SOURCE_DIR}/src/MultiSplit.cpp
     ${SOURCE_DIR}/src/NORS-IQ.cpp
     ${SOURCE_DIR}/src/Oscillator.cpp
+    ${SOURCE_DIR}/src/Pan3D.cpp
     ${SOURCE_DIR}/src/PolySHASR.cpp
     ${SOURCE_DIR}/src/Push5.cpp
     ${SOURCE_DIR}/src/QuadVCPolarizer.cpp
     ${SOURCE_DIR}/src/Reformation.cpp
     ${SOURCE_DIR}/src/RhythmExplorer.cpp
+    ${SOURCE_DIR}/src/SVF.cpp
     ${SOURCE_DIR}/src/ShapedVCA.cpp
+    ${SOURCE_DIR}/src/Slew.cpp
+    ${SOURCE_DIR}/src/SphereToXYZ.cpp
     ${SOURCE_DIR}/src/VCAMix4.cpp
     ${SOURCE_DIR}/src/VCAMix4Stereo.cpp
     ${SOURCE_DIR}/src/VCOUnit.cpp
+    ${SOURCE_DIR}/src/Venom.cpp
     ${SOURCE_DIR}/src/WaveFolder.cpp
+    ${SOURCE_DIR}/src/WaveMangler.cpp
+    ${SOURCE_DIR}/src/WaveMultiplier.cpp
     ${SOURCE_DIR}/src/WinComp.cpp
+    ${SOURCE_DIR}/src/XM_OP.cpp
 
     ${SOURCE_DIR}/src/plugin.cpp
 )

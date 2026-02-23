@@ -1,8 +1,10 @@
 // Venom Modules (c) 2023, 2024 Dave Benham
 // Licensed under GNU GPLv3
 
-#include "plugin.hpp"
+#include "Venom.hpp"
 #include "CloneModule.hpp"
+
+namespace Venom {
 
 struct PolyUnison : CloneModuleBase {
 
@@ -11,6 +13,7 @@ struct PolyUnison : CloneModuleBase {
     DETUNE_PARAM,
     DIRECTION_PARAM,
     RANGE_PARAM,
+    GROUP_PARAM,
     PARAMS_LEN
   };
   enum InputId {
@@ -30,6 +33,7 @@ struct PolyUnison : CloneModuleBase {
 
   int clones = 1;
   float range[3] = {1.f/12.f, 1.f, 5.f};
+  bool vOctDetuneCV = false;
 
   dsp::ClockDivider lightDivider;
 
@@ -62,6 +66,7 @@ struct PolyUnison : CloneModuleBase {
     configInput(DETUNE_INPUT, "Detune spread");
 
     configInput(POLY_INPUT, "Poly");
+    configSwitch<FixedSwitchQuantity>(GROUP_PARAM, 0.f, 1.f, 0.f, "Output grouping", {"Input channel", "Input set"});
     configOutput(POLY_OUTPUT, "Poly");
     configBypass(POLY_INPUT, POLY_OUTPUT);
     for (int i=0; i<16; i++){
@@ -87,7 +92,7 @@ struct PolyUnison : CloneModuleBase {
     float spread = 0.f;
     float delta = 0.f;
     if (clones>1) {
-      spread = detuneParamGetValue() + inputs[DETUNE_INPUT].getVoltage();
+      spread = detuneParamGetValue() + inputs[DETUNE_INPUT].getVoltage() * (vOctDetuneCV ? 1.f : range[static_cast<int>(params[RANGE_PARAM].getValue())] / 10.f);
       delta = spread / (clones-1);
     }
     float start = 0.f;
@@ -102,12 +107,20 @@ struct PolyUnison : CloneModuleBase {
         start = -spread;
         break;
     }
-    
-    int c=0;
-    for (int i=0; i<goodCh; i++) {
-      float val = inputs[POLY_INPUT].getVoltage(i) + start;
-      for (int j=0; j<clones; j++, val+=delta)
-        outputs[POLY_OUTPUT].setVoltage(val, c++);
+
+    if (params[GROUP_PARAM].getValue()){ //group by input channel set
+      for (int i=0; i<goodCh; i++) {
+        float val = inputs[POLY_INPUT].getVoltage(i) + start;
+        for (int c=0, o=i; c<clones; c++, o+=goodCh, val+=delta)
+          outputs[POLY_OUTPUT].setVoltage(val, o);
+      }
+    }
+    else{ //group by individual input channel
+      for (int i=0, o=0; i<goodCh; i++) {
+        float val = inputs[POLY_INPUT].getVoltage(i) + start;
+        for (int j=0; j<clones; j++, val+=delta)
+          outputs[POLY_OUTPUT].setVoltage(val, o++);
+      }
     }
     outputs[POLY_OUTPUT].setChannels(goodCh * clones);
     processExpander(clones, goodCh);
@@ -119,6 +132,21 @@ struct PolyUnison : CloneModuleBase {
       }
       setExpanderLights(goodCh);
     }
+  }
+
+  json_t* dataToJson() override {
+    json_t* rootJ = VenomModule::dataToJson();
+    json_object_set_new(rootJ, "vOctDetuneCV", json_boolean(vOctDetuneCV));
+    return rootJ;
+  }
+
+  void dataFromJson(json_t* rootJ) override {
+    VenomModule::dataFromJson(rootJ);
+    json_t* val;
+    if ((val = json_object_get(rootJ, "vOctDetuneCV")))
+      vOctDetuneCV = json_boolean_value(val);
+    else
+      vOctDetuneCV = true;
   }
 
 };
@@ -165,25 +193,34 @@ struct PolyUnisonWidget : CloneModuleWidget {
     addParam(createLockableParamCentered<RotarySwitch<RoundBlackKnobLockable>>(Vec(22.5,91.941), module, PolyUnison::CLONE_PARAM));
     addInput(createInputCentered<MonoPort>(Vec(22.5,124.974), module, PolyUnison::CLONE_INPUT));
 
-    addParam(createLockableParamCentered<DirectionSwitch>(Vec(13.012f,161.106f), module, PolyUnison::DIRECTION_PARAM));
-    addParam(createLockableParamCentered<RangeSwitch>(Vec(31.989f,161.106), module, PolyUnison::RANGE_PARAM));
-    addParam(createLockableParamCentered<RoundBlackKnobLockable>(Vec(22.5,192.026), module, PolyUnison::DETUNE_PARAM));
-    addInput(createInputCentered<MonoPort>(Vec(22.5,225.079), module, PolyUnison::DETUNE_INPUT));
+    addParam(createLockableParamCentered<DirectionSwitch>(Vec(13.012f,153.106f), module, PolyUnison::DIRECTION_PARAM));
+    addParam(createLockableParamCentered<RangeSwitch>(Vec(31.989f,153.106), module, PolyUnison::RANGE_PARAM));
+    addParam(createLockableParamCentered<RoundBlackKnobLockable>(Vec(22.5,184.026), module, PolyUnison::DETUNE_PARAM));
+    addInput(createInputCentered<MonoPort>(Vec(22.5,217.079), module, PolyUnison::DETUNE_INPUT));
 
     {
       int li, end;
       float x, y, delta=7.557f;
       for (li=0, end=8, x=11.160f; li<32; end+=8, x+=delta){
-        for(y=275.593f; li < end; li+=2, y-=delta){
+        for(y=261.593f; li < end; li+=2, y-=delta){
           addChild(createLightCentered<SmallLight<YellowRedLight<>>>(Vec(x,y), module, PolyUnison::CHANNEL_LIGHTS+li));
         }
       }
     }
 
-    addInput(createInputCentered<PolyPort>(Vec(22.5,301.712), module, PolyUnison::POLY_INPUT));
+    addInput(createInputCentered<PolyPort>(Vec(22.5,287.712), module, PolyUnison::POLY_INPUT));
+    addParam(createLockableParamCentered<GroupSwitch>(Vec(22.5f,308.f), module, PolyUnison::GROUP_PARAM));
     addOutput(createOutputCentered<PolyPort>(Vec(22.5,340.434), module, PolyUnison::POLY_OUTPUT));
   }
 
+  void appendContextMenu(Menu* menu) override {
+    PolyUnison* module = static_cast<PolyUnison*>(this->module);
+    menu->addChild(new MenuSeparator);
+    menu->addChild(createBoolPtrMenuItem("V/Oct Detune CV", "", &module->vOctDetuneCV));
+    CloneModuleWidget::appendContextMenu(menu);
+  }
 };
 
-Model* modelPolyUnison = createModel<PolyUnison, PolyUnisonWidget>("PolyUnison");
+}
+
+Model* modelVenomPolyUnison = createModel<Venom::PolyUnison, Venom::PolyUnisonWidget>("PolyUnison");

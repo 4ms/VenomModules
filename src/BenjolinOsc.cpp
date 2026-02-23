@@ -1,12 +1,15 @@
 // Venom Modules (c) 2023, 2024 Dave Benham
 // Licensed under GNU GPLv3
 
-#include "plugin.hpp"
+#include "Venom.hpp"
 #include "Filter.hpp"
 #include "BenjolinModule.hpp"
 
 #define LIGHT_ON 1.f
+#define LIGHT_DIM 0.2f
 #define LIGHT_OFF 0.02f
+
+namespace Venom {
 
 struct BenjolinOsc : BenjolinModule {
   
@@ -44,6 +47,7 @@ struct BenjolinOsc : BenjolinModule {
   enum LightId {
     CHAOS_LIGHT,
     DOUBLE_LIGHT,
+    ENUMS(RUNGLER_LIGHT,8),
     LIGHTS_LEN
   };
 
@@ -198,13 +202,23 @@ struct BenjolinOsc : BenjolinModule {
       else
         outA = osc*5.f;
     }
+
+    lights[RUNGLER_LIGHT+0].setBrightnessSmooth(asr&1   ? LIGHT_DIM : LIGHT_OFF, args.sampleTime);
+    lights[RUNGLER_LIGHT+1].setBrightnessSmooth(asr&2   ? (dacMode?LIGHT_DIM:LIGHT_ON) : 0.f, args.sampleTime);
+    lights[RUNGLER_LIGHT+2].setBrightnessSmooth(asr&4   ? LIGHT_DIM : 0.f, args.sampleTime);
+    lights[RUNGLER_LIGHT+3].setBrightnessSmooth(asr&8   ? (dacMode?LIGHT_DIM:LIGHT_ON) : 0.f, args.sampleTime);
+    lights[RUNGLER_LIGHT+4].setBrightnessSmooth(asr&16  ? LIGHT_DIM : 0.f, args.sampleTime);
+    lights[RUNGLER_LIGHT+5].setBrightnessSmooth(asr&32  ? (dacMode?LIGHT_ON:LIGHT_DIM) : 0.f, args.sampleTime);
+    lights[RUNGLER_LIGHT+6].setBrightnessSmooth(asr&64  ? LIGHT_ON : 0.f, args.sampleTime);
+    lights[RUNGLER_LIGHT+7].setBrightnessSmooth(asr&128 ? (dacMode?LIGHT_ON:LIGHT_DIM) : 0.f, args.sampleTime);
+
     trig = 0;
     if (clockTrig.isHigh() != oldTrig){
       trig = clockTrig.isHigh() ? 1 : -1;
       oldTrig = clockTrig.isHigh();
     }
     for (BenjolinModule* expndr = rightExpander; expndr; expndr = expndr->rightExpander){
-      if (!expndr->isBypassed() && expndr->model == modelBenjolinGatesExpander && (trig || expndr->expanderTrig)){
+      if (!expndr->isBypassed() && expndr->model == modelVenomBenjolinGatesExpander && (trig || expndr->expanderTrig)){
         expndr->expanderTrig = false;
         BenjolinGatesExpander* gates = static_cast<BenjolinGatesExpander*>(expndr);
         float hi = gates->params[GATES_POLARITY_PARAM].getValue() ? 5.f : 10.f;
@@ -257,7 +271,7 @@ struct BenjolinOsc : BenjolinModule {
           gates->lights[GATE_LIGHT+i].setBrightnessSmooth(val!=0, args.sampleTime);
         }
       }
-      if (!expndr->isBypassed() && expndr->model == modelBenjolinVoltsExpander && (trig || expndr->expanderTrig)){
+      if (!expndr->isBypassed() && expndr->model == modelVenomBenjolinVoltsExpander && (trig || expndr->expanderTrig)){
         expndr->expanderTrig = false;
         BenjolinVoltsExpander* volts = static_cast<BenjolinVoltsExpander*>(expndr);
         float val = 0.f;
@@ -342,7 +356,7 @@ struct BenjolinOscWidget : VenomWidget {
     setVenomPanel("BenjolinOsc");
     addParam(createLockableParamCentered<RoundBlackKnobLockable>(Vec(24.865,96.097), module, BenjolinOsc::FREQ1_PARAM));
     addParam(createLockableParamCentered<RoundBlackKnobLockable>(Vec(63.288,96.097), module, BenjolinOsc::FREQ2_PARAM));
-    addParam(createLockableParamCentered<OverSwitch>(Vec(120.923,76.204), module, BenjolinOsc::OVER_PARAM));
+    addParam(createLockableParamCentered<OverSwitch>(Vec(120.923,68.204), module, BenjolinOsc::OVER_PARAM));
     addParam(createLockableParamCentered<RoundSmallBlackKnobLockable>(Vec(24.865,148.33), module, BenjolinOsc::RUNG1_PARAM));
     addParam(createLockableParamCentered<RoundSmallBlackKnobLockable>(Vec(63.288,148.33), module, BenjolinOsc::RUNG2_PARAM));
     addParam(createLockableParamCentered<RoundBlackKnobLockable>(Vec(120.923,148.33), module, BenjolinOsc::PATTERN_PARAM));
@@ -362,6 +376,14 @@ struct BenjolinOscWidget : VenomWidget {
     addOutput(createOutputCentered<MonoPort>(Vec(63.288,330.368), module, BenjolinOsc::PULSE2_OUTPUT));
     addOutput(createOutputCentered<MonoPort>(Vec(101.712,330.368), module, BenjolinOsc::PWM_OUTPUT));
     addOutput(createOutputCentered<MonoPort>(Vec(140.135,330.368), module, BenjolinOsc::RUNG_OUTPUT));
+
+    {
+      int i;
+      float x;
+      for (i=0, x=93.066f; i<8; i++, x+=7.959f){
+        addChild(createLightCentered<SmallSimpleLight<YellowLight>>(Vec(x,90.137f), module, BenjolinOsc::RUNGLER_LIGHT+i));
+      }
+    }
   }
 
   void appendContextMenu(Menu* menu) override {
@@ -383,8 +405,8 @@ struct BenjolinOscWidget : VenomWidget {
       [=]() {return module->dacMode;},
       [=](int i) {module->setDacMode(i);}
     ));
-    menu->addChild(createMenuItem("Add Benjolin Gates Expander", "", [this](){addExpander(modelBenjolinGatesExpander,this);}));
-    menu->addChild(createMenuItem("Add Benjolin Volts Expander", "", [this](){addExpander(modelBenjolinVoltsExpander,this);}));
+    menu->addChild(createMenuItem("Add Benjolin Gates Expander", "", [this](){addExpander(modelVenomBenjolinGatesExpander,this);}));
+    menu->addChild(createMenuItem("Add Benjolin Volts Expander", "", [this](){addExpander(modelVenomBenjolinVoltsExpander,this);}));
     VenomWidget::appendContextMenu(menu);
   }
 
@@ -398,4 +420,6 @@ struct BenjolinOscWidget : VenomWidget {
   }
 };
 
-Model* modelBenjolinOsc = createModel<BenjolinOsc, BenjolinOscWidget>("BenjolinOsc");
+}
+
+Model* modelVenomBenjolinOsc = createModel<Venom::BenjolinOsc, Venom::BenjolinOscWidget>("BenjolinOsc");

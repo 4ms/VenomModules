@@ -1,4 +1,123 @@
 # Venom Modules Changelog
+## 2.14.5 (2025-12-16)
+### Enhancement
+- Multimode Filter
+  - New Spread direction Right Absolute in which the Cutoff Frequency knob and CV only applies to the left, and the Spread knob and CV becomes the right cutoff
+
+### Bug Fixes
+- Linear Beats All New mode was broken as per https://github.com/DaveBenham/VenomModules/issues/33
+- XM-OP would sometimes crash on patch load if quantize is off as per https://github.com/DaveBenham/VenomModules/issues/34
+
+## 2.14.2 (2025-12-06)
+### Enhancements
+- Multimode Filter
+  - Five new Morph modes
+    - BP <-> Notch
+    - Dry <-> Wet LP
+    - Dry <-> Wet HP
+    - Dry <-> Wet BP
+    - Dry <-> Wet Notch
+  - New input coupling option button
+    - DC (default) - old behavior
+    - AC - This can eliminate saturation asymmetry when the input has a DC offset
+  - New Gain VCA polarity option button
+    - Unipolar (default) - old behavior
+    - Bipolar - This can only have an effect with Gain CV
+  - Gain range extended to 10
+    - CV now scaled at 1 per Volt instead of 0.2 per Volt
+    - Effective gain now clamped to 0V - 10V or -10V - 10V, depending on VCA polarity
+    - This can be a breaking change for old patches with Gain CV
+- Wincomp
+  - Added context menu option to normal B input to the previous sample from the A input so Wincomp can function as a crude slope detector.
+
+### Bug Fix
+- Multimode Filter Notch output was sometimes inverted
+
+## 2.14.1 (2025-11-25)
+### New Module
+- Multimode Filter
+
+### Enhancements
+- AD/ASR Envelope Generator
+  - Added a Glacial speed with stage lengths as long as 48 minutes 
+- SLEW
+  - Added context menu to adjust sensitivity of oversampled slope detector
+- XM-OP
+  - Added a DC coupled FM option for XMod and Feedback
+  - Added options to apply envelope attenuation to CV instead of or in addition to the control knob
+  - Added button to enable or disable ratio quantization
+
+## 2.13.2 (2025-10-05)
+### New Modules
+- AD/ASR Envelope Generator
+- Slew
+- Wave Mangler
+- WinComp 2 + Logic
+- XM-OP
+
+### Enhancements
+- Benjolin Oscillator
+  - Add Rungler shift register LEDs
+- Clone Merge, Poly Clone, Poly Unison, Aux Clone
+  - Add option to group output channels by individual input channel (original behavior), or input set
+- Knob 5, Poly Offset
+  - New knob configuration options to set custom ranges and custom quantize intervals
+- Push 5
+  - New button configuration options to set custom on and off values.
+
+### Bug Fix for unpublished 2.13.1
+- Poly Offset was not properly restoring knob range on load
+
+## 2.12.3 (2025-06-05)
+### Enhancements
+- Cross Fade 3D and Pan 3D
+  - Added CV Scale context menu option for -200% to 200%. Allows +/- 5V bipolar sine or triangle CV to transistion to an extreme, hold, and then transition again, without requiring external amplification.
+- Knob 5
+  - Smooth response to knob change
+
+## 2.12.1 (2025-05-09)
+### New Modules
+- Cross Fade 3D
+- Pan 3D
+- Sphere To XYZ
+- Wave Multiplier
+
+### Enhancements
+- All modules with DC block options
+  - Improved the DC block algorithm to compensate for changes to overampling and or VCV sample rate (potential patch sound breaking change)
+- VCO Lab and VCO Unit
+  - Added a module context menu option to measure LFO frequency in BPM instead of Hz
+  - Added pseudo PWM shape modes to sine, triangle, and saw, as well as skew shape modes to sine and triangle.
+  - Added linear FM option to disable through-zero
+  - Added context menu option to set default audio rate oversampling
+  - Linear FM now sounds consistent as sample rate and/or oversample rate change (due to DC block improvement).
+- VCO Unit
+  - Shape mode now always has 8 options, regardless which waveform is selected. The square waveform rotates through the three modes to make 8. This change guarantees that cycling through all the waveform options will not change the shape mode for a particular waveform.
+- Poly Fade
+  - Added context menu option to disable output channel minimization
+- Poly Offset Quantize behavior
+  - Old behavior that quantizes the output no longer quantizes the offset knob displays
+  - Added new options to quantize the offset only, which does quantize the knob displays
+- Multi Merge
+  - Add context menu options to explicitly set the number of channels on inputs, overriding the actual input channel count.
+- Rhythm Explorer
+  - Added 96 ppqn clock option
+  - Added dotted rate options
+- Poly Unison
+  - Detune CV now scales 10V to match the detune knob range
+    - Old patches default to old behavior of V/Oct for Detune CV
+- Bay Modules better preserve links when performing duplication or copy/paste
+  - New behavior: Duplication of linked outputs where the input is missing from the selection attempt to establish the link to the original uncopied input
+  - Continued old behavior: Duplication of input/output pairs establish the link between the new copies
+
+### Bug Fix
+- WinComp
+  - Absolute value was applied to Tolerance input, but not the tolerance offset parameter
+  - Module now correctly sums the tolerance input with the offset before taking the absolute value
+
+### Additional Change
+- Mix 4, Mix 4 Stereo, VCA Mix 4, and VCA Mix 4 Stereo
+  - In the interest of avoiding memory allocation during the audio process, the Mix modules are now limited to a maximum of 16 expanders. Prior to v2.12 there was no limit.
 
 ## 2.11.1 (2024-12-17)
 ### Enhancements

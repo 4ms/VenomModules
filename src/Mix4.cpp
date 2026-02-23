@@ -1,10 +1,12 @@
 // Venom Modules (c) 2023, 2024 Dave Benham
 // Licensed under GNU GPLv3
 
-#include "plugin.hpp"
+#include "Venom.hpp"
 #include "MixModule.hpp"
 #include "math.hpp"
 #include "Filter.hpp"
+
+namespace Venom {
 
 struct Mix4 : MixBaseModule {
   enum ParamId {
@@ -32,7 +34,7 @@ struct Mix4 : MixBaseModule {
   float normal = 0.f;
   float scale = 1.f;
   float offset = 0.f;
-  int oversample = 4;
+  int oversample = 4, sampleRate = 0;
   OversampleFilter_4 outUpSample[4]{}, outDownSample[4]{};
   DCBlockFilter_4 dcBlockBeforeFilter[4]{}, dcBlockAfterFilter[4]{};
 
@@ -72,6 +74,13 @@ struct Mix4 : MixBaseModule {
   
   void process(const ProcessArgs& args) override {
     MixBaseModule::process(args);
+    if (args.sampleRate != sampleRate){
+      sampleRate = args.sampleRate;
+      for (int i=0; i<4; i++){
+        dcBlockBeforeFilter[i].init(oversample, sampleRate);
+        dcBlockAfterFilter[i].init(oversample, sampleRate);
+      }
+    }
     if( static_cast<int>(params[MODE_PARAM].getValue()) != mode ||
         connected[0] != inputs[INPUTS + 0].isConnected() ||
         connected[1] != inputs[INPUTS + 1].isConnected() ||
@@ -121,7 +130,7 @@ struct Mix4 : MixBaseModule {
           :
             (inputs[INPUTS+i].getNormalPolyVoltageSimd<simd::float_4>(normal, c) + preOff[i]) * (params[LEVEL_PARAMS+i].getValue()+offset)*scale + postOff[i];
       }
-      for (unsigned int x=0; x<expanders.size(); x++){
+      for (unsigned int x=0; x<expandersCnt; x++){
         MixModule* exp = expanders[x];
         MixModule* soloMod = NULL;
         MixModule* muteMod = NULL;
@@ -298,4 +307,6 @@ struct Mix4Widget : MixBaseWidget {
 
 };
 
-Model* modelMix4 = createModel<Mix4, Mix4Widget>("Mix4");
+}
+
+Model* modelVenomMix4 = createModel<Venom::Mix4, Venom::Mix4Widget>("Mix4");

@@ -89,7 +89,46 @@
     {
       "slug": "WinComp",
       "name": "WinComp"
-	}
+	},
+    {
+      "slug": "AD_ASR",
+      "name": "AD/ASR Envelope Generator"
+    },
+    {
+      "slug": "CrossFade3D",
+      "name": "Cross Fade 3D"
+    },
+    {
+      "slug": "SVF",
+      "name": "Multimode Filter"
+    },
+    {
+      "slug": "Pan3D",
+      "name": "Pan 3D"
+    },
+    {
+      "slug": "Slew",
+      "name": "Slew"
+    },
+    {
+      "slug": "SphereToXYZ",
+      "name": "Sphere To XYZ"
+    },
+    {
+      "slug": "WaveMangler",
+      "name": "Wave Mangler"
+    },
+    {
+      "slug": "WaveMultiplier",
+      "name": "Wave Multiplier"
+    },
+    {
+      "slug": "Compare2",
+      "name": "WinComp2 + Logic"
+    },
+    {
+      "slug": "XM_OP",
+      "name": "XM-OP"
+    }
     ]
 }
-

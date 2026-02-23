@@ -1,8 +1,10 @@
 // Venom Modules (c) 2023, 2024 Dave Benham
 // Licensed under GNU GPLv3
 
-#include "plugin.hpp"
+#include "Venom.hpp"
 #include "TaskWorker.hpp"
+
+namespace Venom {
 
 struct Bypass : VenomModule {
   enum ParamId {
@@ -103,7 +105,7 @@ struct Bypass : VenomModule {
       outputs[BYPASS_OUTPUT+i].writeVoltages(inputs[BYPASS_INPUT+i].getVoltages());
     }
     if (event || buttonEvent)
-      taskWorker.work([=](){ processBypass(); });
+      taskWorker.work([=](){ venomProcessBypass(); });
   }
   
   struct BypassGroup {
@@ -111,7 +113,7 @@ struct Bypass : VenomModule {
     int scope = 0;
   };
 
-  void processBypass(){
+  void venomProcessBypass(){
     BypassGroup bypassGroup[6]{};
     std::vector<Module*> inMods[INPUTS_LEN]{};
     std::vector<Module*> outMods[OUTPUTS_LEN]{};
@@ -217,4 +219,6 @@ struct BypassWidget : VenomWidget {
 
 };
 
-Model* modelBypass = createModel<Bypass, BypassWidget>("Bypass");
+}
+
+Model* modelVenomBypass = createModel<Venom::Bypass, Venom::BypassWidget>("Bypass");
