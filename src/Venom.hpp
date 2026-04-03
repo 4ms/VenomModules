@@ -560,9 +560,11 @@ struct DigitalDisplay : Widget {
 
     prepareFont(args);
 
+#if !defined(METAMODULE)
     // Background text
     nvgFillColor(args.vg, bgColor);
     nvgText(args.vg, textPos.x, textPos.y, bgText.c_str(), NULL);
+#endif
   }
 
   void drawLayer(const DrawArgs& args, int layer) override {
