@@ -111,6 +111,20 @@ void init(Plugin* p) {
   p->addModel(modelVenomWaveMultiplier);
   p->addModel(modelVenomWinComp);
   p->addModel(modelVenomXM_OP);
+
+  p->addModel(modelVenomCloneMerge);
+  p->addModel(modelVenomMultiMerge);
+  p->addModel(modelVenomMultiSplit);
+  p->addModel(modelVenomPolyClone);
+  p->addModel(modelVenomPolyFade);
+  p->addModel(modelVenomPolyOffset);
+  p->addModel(modelVenomPolySHASR);
+  p->addModel(modelVenomPolyScale);
+  p->addModel(modelVenomPolyUnison);
+  p->addModel(modelVenomThru);
+
+  // p->addModel(modelVenomRecurse);
+  // p->addModel(modelVenomRecurseStereo);
 #endif
 
   // Any other plugin initialization may go here.

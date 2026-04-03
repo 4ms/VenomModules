@@ -71,6 +71,21 @@ target_sources(Venom
     ${SOURCE_DIR}/src/WinComp.cpp
     ${SOURCE_DIR}/src/XM_OP.cpp
 
+    ${SOURCE_DIR}/src/CloneMerge.cpp
+    ${SOURCE_DIR}/src/MultiMerge.cpp
+    ${SOURCE_DIR}/src/MultiSplit.cpp
+    ${SOURCE_DIR}/src/PolyClone.cpp
+    ${SOURCE_DIR}/src/PolyFade.cpp
+    ${SOURCE_DIR}/src/PolyOffset.cpp
+    ${SOURCE_DIR}/src/PolySHASR.cpp
+    ${SOURCE_DIR}/src/PolyScale.cpp
+    ${SOURCE_DIR}/src/PolyUnison.cpp
+    ${SOURCE_DIR}/src/Thru.cpp
+    ${SOURCE_DIR}/src/AuxClone.cpp # needed for CloneModule
+
+    # ${SOURCE_DIR}/src/Recurse.cpp
+    # ${SOURCE_DIR}/src/RecurseStereo.cpp
+
     ${SOURCE_DIR}/src/plugin.cpp
 )
 
