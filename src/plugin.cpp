@@ -3,14 +3,18 @@
 
 #include "plugin.hpp"
 
-Plugin* pluginInstance;
-
 namespace Venom
 {
   void readDefaultThemes();
 }
 
+#ifdef METAMODULE_BUILTIN
+extern Plugin* pluginInstance;
+void init_Venom(Plugin* p) {
+#else
+Plugin* pluginInstance;
 void init(Plugin* p) {
+#endif
   pluginInstance = p;
 
   // Add modules here
