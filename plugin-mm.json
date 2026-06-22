@@ -129,6 +129,46 @@
     {
       "slug": "XM_OP",
       "name": "XM-OP"
+    },
+    {
+      "slug": "CloneMerge",
+      "name": "Clone Merge"
+    },
+    {
+      "slug": "MultiMerge",
+      "name": "Multi Merge"
+    },
+    {
+      "slug": "MultiSplit",
+      "name": "Multi Split"
+    },
+    {
+      "slug": "PolyClone",
+      "name": "Poly Clone"
+    },
+    {
+      "slug": "PolyFade",
+      "name": "Poly Fade"
+    },
+    {
+      "slug": "PolyOffset",
+      "name": "Poly Offset"
+    },
+    {
+      "slug": "PolySHASR",
+      "name": "Poly Sample & Hold Analog Shift Register"
+    },
+    {
+      "slug": "PolyScale",
+      "name": "Poly Scale"
+    },
+    {
+      "slug": "PolyUnison",
+      "name": "Poly Unison"
+    },
+    {
+      "slug": "Thru",
+      "name": "Thru"
     }
     ]
 }
