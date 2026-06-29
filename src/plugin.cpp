@@ -1,145 +1,148 @@
 // Venom Modules (c) 2023, 2024 Dave Benham
-// Licensed under GNU GPLv3 
+// Licensed under GNU GPLv3
 
 #include "plugin.hpp"
 
 namespace Venom
 {
-  void readDefaultThemes();
+void readDefaultThemes();
 }
 
 #ifdef METAMODULE_BUILTIN
-extern Plugin* pluginInstance;
-void init_Venom(Plugin* p) {
+extern Plugin *pluginInstance;
+void init_Venom(Plugin *p) {
 #else
-Plugin* pluginInstance;
-void init(Plugin* p) {
+Plugin *pluginInstance;
+void init(Plugin *p) {
 #endif
-  pluginInstance = p;
+	pluginInstance = p;
 
-  // Add modules here
+	// Add modules here
 #if !defined(METAMODULE)
-  p->addModel(modelVenomAD_ASR);
-  p->addModel(modelVenomAuxClone);
-  p->addModel(modelVenomBayInput);
-  p->addModel(modelVenomBayNorm);
-  p->addModel(modelVenomBayOutput);
-  p->addModel(modelVenomBenjolinOsc);
-  p->addModel(modelVenomBenjolinGatesExpander);
-  p->addModel(modelVenomBenjolinVoltsExpander);
-  p->addModel(modelVenomBernoulliSwitch);
-  p->addModel(modelVenomBernoulliSwitchExpander);
-  p->addModel(modelVenomBlocker);
-  p->addModel(modelVenomBypass);
-  p->addModel(modelVenomCloneMerge);
-  p->addModel(modelVenomCompare2);
-  p->addModel(modelVenomCrossFade3D);
-  p->addModel(modelVenomHQ);
-  p->addModel(modelVenomKnob5);
-  p->addModel(modelVenomLinearBeats);
-  p->addModel(modelVenomLinearBeatsExpander);
-  p->addModel(modelVenomLogic);
-  p->addModel(modelVenomMerge4x2);
-  p->addModel(modelVenomMergeSplit);
-  p->addModel(modelVenomMix4);
-  p->addModel(modelVenomMix4Stereo);
-  p->addModel(modelVenomMixFade);
-  p->addModel(modelVenomMixFade2);
-  p->addModel(modelVenomMixMute);
-  p->addModel(modelVenomMixOffset);
-  p->addModel(modelVenomMixPan);
-  p->addModel(modelVenomMixSend);
-  p->addModel(modelVenomMixSolo);
-  p->addModel(modelVenomMousePad);
-  p->addModel(modelVenomMultiMerge);
-  p->addModel(modelVenomMultiSplit);
-  p->addModel(modelVenomSVF);
-  p->addModel(modelVenomOscillator);
-  p->addModel(modelVenomNORS_IQ);
-  p->addModel(modelVenomNORSIQChord2Scale);
-  p->addModel(modelVenomNullCable);
-  p->addModel(modelVenomOctaver);
-  p->addModel(modelVenomPan3D);
-  p->addModel(modelVenomPolyClone);
-  p->addModel(modelVenomPolyFade);
-  p->addModel(modelVenomPolyMute);
-  p->addModel(modelVenomPolyOffset);
-  p->addModel(modelVenomPolyPrune);
-  p->addModel(modelVenomPolySHASR);
-  p->addModel(modelVenomPolyScale);
-  p->addModel(modelVenomPolyUnison);
-  p->addModel(modelVenomPush5);
-  p->addModel(modelVenomQuadVCPolarizer);
-  p->addModel(modelVenomRecurse);
-  p->addModel(modelVenomRecurseStereo);
-  p->addModel(modelVenomReformation);
-  p->addModel(modelVenomRhythmExplorer);
-  p->addModel(modelVenomREXCV);
-  p->addModel(modelVenomShapedVCA);
-  p->addModel(modelVenomSlew);
-  p->addModel(modelVenomSphereToXYZ);
-  p->addModel(modelVenomSplit4x2);
-  p->addModel(modelVenomThru);
-  p->addModel(modelVenomVCAMix4);
-  p->addModel(modelVenomVCAMix4Stereo);
-  p->addModel(modelVenomVCOUnit);
-  p->addModel(modelVenomBlank);
-  p->addModel(modelVenomWaveFolder);
-  p->addModel(modelVenomWaveMangler);
-  p->addModel(modelVenomWaveMultiplier);
-  p->addModel(modelVenomWidgetMenuExtender);
-  p->addModel(modelVenomWinComp);
-  p->addModel(modelVenomXM_OP);
+	p->addModel(modelVenomAD_ASR);
+	p->addModel(modelVenomAuxClone);
+	p->addModel(modelVenomBayInput);
+	p->addModel(modelVenomBayNorm);
+	p->addModel(modelVenomBayOutput);
+	p->addModel(modelVenomBenjolinOsc);
+	p->addModel(modelVenomBenjolinGatesExpander);
+	p->addModel(modelVenomBenjolinVoltsExpander);
+	p->addModel(modelVenomBernoulliSwitch);
+	p->addModel(modelVenomBernoulliSwitchExpander);
+	p->addModel(modelVenomBlocker);
+	p->addModel(modelVenomBypass);
+	p->addModel(modelVenomCloneMerge);
+	p->addModel(modelVenomCompare2);
+	p->addModel(modelVenomCrossFade3D);
+	p->addModel(modelVenomHQ);
+	p->addModel(modelVenomKnob5);
+	p->addModel(modelVenomLinearBeats);
+	p->addModel(modelVenomLinearBeatsExpander);
+	p->addModel(modelVenomLogic);
+	p->addModel(modelVenomMerge4x2);
+	p->addModel(modelVenomMergeSplit);
+	p->addModel(modelVenomMix4);
+	p->addModel(modelVenomMix4Stereo);
+	p->addModel(modelVenomMixFade);
+	p->addModel(modelVenomMixFade2);
+	p->addModel(modelVenomMixMute);
+	p->addModel(modelVenomMixOffset);
+	p->addModel(modelVenomMixPan);
+	p->addModel(modelVenomMixSend);
+	p->addModel(modelVenomMixSolo);
+	p->addModel(modelVenomMousePad);
+	p->addModel(modelVenomMultiMerge);
+	p->addModel(modelVenomMultiSplit);
+	p->addModel(modelVenomSVF);
+	p->addModel(modelVenomOscillator);
+	p->addModel(modelVenomNORS_IQ);
+	p->addModel(modelVenomNORSIQChord2Scale);
+	p->addModel(modelVenomNullCable);
+	p->addModel(modelVenomOctaver);
+	p->addModel(modelVenomPan3D);
+	p->addModel(modelVenomPolyClone);
+	p->addModel(modelVenomPolyFade);
+	p->addModel(modelVenomPolyMute);
+	p->addModel(modelVenomPolyOffset);
+	p->addModel(modelVenomPolyPrune);
+	p->addModel(modelVenomPolySHASR);
+	p->addModel(modelVenomPolyScale);
+	p->addModel(modelVenomPolyUnison);
+	p->addModel(modelVenomPush5);
+	p->addModel(modelVenomQuadVCPolarizer);
+	p->addModel(modelVenomRecurse);
+	p->addModel(modelVenomRecurseStereo);
+	p->addModel(modelVenomReformation);
+	p->addModel(modelVenomRhythmExplorer);
+	p->addModel(modelVenomREXCV);
+	p->addModel(modelVenomShapedVCA);
+	p->addModel(modelVenomSlew);
+	p->addModel(modelVenomSphereToXYZ);
+	p->addModel(modelVenomSplit4x2);
+	p->addModel(modelVenomThru);
+	p->addModel(modelVenomVCAMix4);
+	p->addModel(modelVenomVCAMix4Stereo);
+	p->addModel(modelVenomVCOUnit);
+	p->addModel(modelVenomBlank);
+	p->addModel(modelVenomWaveFolder);
+	p->addModel(modelVenomWaveMangler);
+	p->addModel(modelVenomWaveMultiplier);
+	p->addModel(modelVenomWidgetMenuExtender);
+	p->addModel(modelVenomWinComp);
+	p->addModel(modelVenomXM_OP);
 #else
-  // MetaModule build: curated set of modules validated on hardware
-  p->addModel(modelVenomAD_ASR);
-  p->addModel(modelVenomBenjolinOsc);
-  p->addModel(modelVenomBernoulliSwitch);
-  p->addModel(modelVenomCompare2);
-  p->addModel(modelVenomCrossFade3D);
-  p->addModel(modelVenomHQ);
-  p->addModel(modelVenomKnob5);
-  p->addModel(modelVenomLinearBeats);
-  p->addModel(modelVenomLogic);
-  p->addModel(modelVenomMix4);
-  p->addModel(modelVenomMix4Stereo);
-  p->addModel(modelVenomNORS_IQ);
-  p->addModel(modelVenomOscillator);
-  p->addModel(modelVenomPan3D);
-  p->addModel(modelVenomPolySHASR);
-  p->addModel(modelVenomPush5);
-  p->addModel(modelVenomQuadVCPolarizer);
-  p->addModel(modelVenomReformation);
-  p->addModel(modelVenomRhythmExplorer);
-  p->addModel(modelVenomSVF);
-  p->addModel(modelVenomShapedVCA);
-  p->addModel(modelVenomSlew);
-  p->addModel(modelVenomSphereToXYZ);
-  p->addModel(modelVenomVCAMix4);
-  p->addModel(modelVenomVCAMix4Stereo);
-  p->addModel(modelVenomVCOUnit);
-  p->addModel(modelVenomWaveFolder);
-  p->addModel(modelVenomWaveMangler);
-  p->addModel(modelVenomWaveMultiplier);
-  p->addModel(modelVenomWinComp);
-  p->addModel(modelVenomXM_OP);
+	// MetaModule build: curated set of modules validated on hardware
 
-  p->addModel(modelVenomCloneMerge);
-  p->addModel(modelVenomMultiMerge);
-  p->addModel(modelVenomMultiSplit);
-  p->addModel(modelVenomPolyClone);
-  p->addModel(modelVenomPolyFade);
-  p->addModel(modelVenomPolyOffset);
-  p->addModel(modelVenomPolySHASR);
-  p->addModel(modelVenomPolyScale);
-  p->addModel(modelVenomPolyUnison);
-  p->addModel(modelVenomThru);
-
-  // p->addModel(modelVenomRecurse);
-  // p->addModel(modelVenomRecurseStereo);
+	p->addModel(modelVenomAD_ASR);
+	p->addModel(modelVenomBenjolinOsc);
+	p->addModel(modelVenomBernoulliSwitch);
+	p->addModel(modelVenomCloneMerge);
+	p->addModel(modelVenomCompare2);
+	p->addModel(modelVenomCrossFade3D);
+	p->addModel(modelVenomHQ);
+	p->addModel(modelVenomKnob5);
+	p->addModel(modelVenomLinearBeats);
+	p->addModel(modelVenomLogic);
+	p->addModel(modelVenomMerge4x2);
+	p->addModel(modelVenomMergeSplit);
+	p->addModel(modelVenomMix4);
+	p->addModel(modelVenomMix4Stereo);
+	p->addModel(modelVenomMultiMerge);
+	p->addModel(modelVenomMultiSplit);
+	p->addModel(modelVenomNORS_IQ);
+	p->addModel(modelVenomNullCable);
+	p->addModel(modelVenomOctaver);
+	p->addModel(modelVenomOscillator);
+	p->addModel(modelVenomPan3D);
+	p->addModel(modelVenomPolyClone);
+	p->addModel(modelVenomPolyFade);
+	p->addModel(modelVenomPolyMute);
+	p->addModel(modelVenomPolyOffset);
+	p->addModel(modelVenomPolyPrune);
+	p->addModel(modelVenomPolySHASR);
+	p->addModel(modelVenomPolyScale);
+	p->addModel(modelVenomPolyUnison);
+	p->addModel(modelVenomPush5);
+	p->addModel(modelVenomQuadVCPolarizer);
+	p->addModel(modelVenomReformation);
+	p->addModel(modelVenomRhythmExplorer);
+	p->addModel(modelVenomSVF);
+	p->addModel(modelVenomShapedVCA);
+	p->addModel(modelVenomSlew);
+	p->addModel(modelVenomSphereToXYZ);
+	p->addModel(modelVenomSplit4x2);
+	p->addModel(modelVenomThru);
+	p->addModel(modelVenomVCAMix4);
+	p->addModel(modelVenomVCAMix4Stereo);
+	p->addModel(modelVenomVCOUnit);
+	p->addModel(modelVenomWaveFolder);
+	p->addModel(modelVenomWaveMangler);
+	p->addModel(modelVenomWaveMultiplier);
+	p->addModel(modelVenomWinComp);
+	p->addModel(modelVenomXM_OP);
 #endif
 
-  // Any other plugin initialization may go here.
-  // As an alternative, consider lazy-loading assets and lookup tables when your module is created to reduce startup times of Rack.
-  Venom::readDefaultThemes();
+	// Any other plugin initialization may go here.
+	// As an alternative, consider lazy-loading assets and lookup tables when your module is created to reduce startup times of Rack.
+	Venom::readDefaultThemes();
 }

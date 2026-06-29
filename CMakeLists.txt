@@ -83,6 +83,16 @@ target_sources(Venom
     ${SOURCE_DIR}/src/Thru.cpp
     ${SOURCE_DIR}/src/AuxClone.cpp # needed for CloneModule
 
+    
+    ${SOURCE_DIR}/src/Merge4x2.cpp
+    ${SOURCE_DIR}/src/MergeSplit.cpp
+    ${SOURCE_DIR}/src/NullCable.cpp
+    ${SOURCE_DIR}/src/Octaver.cpp
+    ${SOURCE_DIR}/src/PolyMute.cpp
+    ${SOURCE_DIR}/src/PolyPrune.cpp
+    ${SOURCE_DIR}/src/Split4x2.cpp
+    ${SOURCE_DIR}/src/REXCV.cpp # needed for RhythmExplorer
+
     # ${SOURCE_DIR}/src/Recurse.cpp
     # ${SOURCE_DIR}/src/RecurseStereo.cpp
 
