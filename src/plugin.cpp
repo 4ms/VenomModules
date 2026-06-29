@@ -39,6 +39,8 @@ void init(Plugin* p) {
   p->addModel(modelVenomLinearBeats);
   p->addModel(modelVenomLinearBeatsExpander);
   p->addModel(modelVenomLogic);
+  p->addModel(modelVenomMerge4x2);
+  p->addModel(modelVenomMergeSplit);
   p->addModel(modelVenomMix4);
   p->addModel(modelVenomMix4Stereo);
   p->addModel(modelVenomMixFade);
@@ -55,10 +57,14 @@ void init(Plugin* p) {
   p->addModel(modelVenomOscillator);
   p->addModel(modelVenomNORS_IQ);
   p->addModel(modelVenomNORSIQChord2Scale);
+  p->addModel(modelVenomNullCable);
+  p->addModel(modelVenomOctaver);
   p->addModel(modelVenomPan3D);
   p->addModel(modelVenomPolyClone);
   p->addModel(modelVenomPolyFade);
+  p->addModel(modelVenomPolyMute);
   p->addModel(modelVenomPolyOffset);
+  p->addModel(modelVenomPolyPrune);
   p->addModel(modelVenomPolySHASR);
   p->addModel(modelVenomPolyScale);
   p->addModel(modelVenomPolyUnison);
@@ -68,9 +74,11 @@ void init(Plugin* p) {
   p->addModel(modelVenomRecurseStereo);
   p->addModel(modelVenomReformation);
   p->addModel(modelVenomRhythmExplorer);
+  p->addModel(modelVenomREXCV);
   p->addModel(modelVenomShapedVCA);
   p->addModel(modelVenomSlew);
   p->addModel(modelVenomSphereToXYZ);
+  p->addModel(modelVenomSplit4x2);
   p->addModel(modelVenomThru);
   p->addModel(modelVenomVCAMix4);
   p->addModel(modelVenomVCAMix4Stereo);
