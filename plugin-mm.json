@@ -1,10 +1,10 @@
 {
-	"MetaModuleBrandName": "Venom",
-	"MetaModuleBrandSlug": "Venom",
-	"MetaModulePluginMaintainer": "4ms Company",
-	"MetaModulePluginMaintainerEmail": "4ms@4mscompany.com",
-	"MetaModulePluginMaintainerUrl": "https://metamodule.info",
-	"MetaModuleDescription": "Venom modules ported from VCV",
+    "MetaModuleBrandName": "Venom",
+    "MetaModuleBrandSlug": "Venom",
+    "MetaModulePluginMaintainer": "4ms Company",
+    "MetaModulePluginMaintainerEmail": "4ms@4mscompany.com",
+    "MetaModulePluginMaintainerUrl": "https://metamodule.info",
+    "MetaModuleDescription": "Venom modules ported from VCV",
     "MetaModuleIncludedModules": [
     {
       "slug": "BenjolinOsc",
@@ -89,7 +89,7 @@
     {
       "slug": "WinComp",
       "name": "WinComp"
-	},
+    },
     {
       "slug": "AD_ASR",
       "name": "AD/ASR Envelope Generator"
@@ -169,6 +169,34 @@
     {
       "slug": "Thru",
       "name": "Thru"
+    },
+    {
+      "slug": "NullCable",
+      "name": "Null Cable"
+    },
+    {
+      "slug": "Octaver",
+      "name": "Octaver"
+    },
+    {
+      "slug": "Split4x2",
+      "name": "Split 4x2"
+    },
+    {
+      "slug": "Merge4x2",
+      "name": "Merge 4x2"
+    },
+    {
+      "slug": "MergeSplit",
+      "name": "Merge Split"
+    },
+    {
+      "slug": "PolyMute",
+      "name": "Poly Mute"
+    },
+    {
+      "slug": "PolyPrune",
+      "name": "Poly Prune"
     }
     ]
 }
