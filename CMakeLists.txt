@@ -31,6 +31,7 @@ target_sources(Venom
     ${SOURCE_DIR}/src/BenjolinVoltsExpander.cpp
     ${SOURCE_DIR}/src/BernoulliSwitch.cpp
     ${SOURCE_DIR}/src/BernoulliSwitchExpander.cpp
+    ${SOURCE_DIR}/src/Blocker.cpp
     ${SOURCE_DIR}/src/Compare2.cpp
     ${SOURCE_DIR}/src/CrossFade3D.cpp
     ${SOURCE_DIR}/src/HQ.cpp

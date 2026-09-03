@@ -245,6 +245,10 @@
     {
       "slug": "REXCV",
       "name": "Rhythm Explorer CV Expander"
+    },
+    {
+      "slug": "Blocker",
+      "name": "Blocker"
     }
     ]
 }

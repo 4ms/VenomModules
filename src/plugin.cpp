@@ -96,6 +96,7 @@ void init(Plugin *p) {
 	p->addModel(modelVenomBenjolinVoltsExpander);
 	p->addModel(modelVenomBernoulliSwitch);
 	p->addModel(modelVenomBernoulliSwitchExpander);
+	p->addModel(modelVenomBlocker);
 	p->addModel(modelVenomCloneMerge);
 	p->addModel(modelVenomCompare2);
 	p->addModel(modelVenomCrossFade3D);
