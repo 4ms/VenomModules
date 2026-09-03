@@ -249,6 +249,10 @@
     {
       "slug": "Blocker",
       "name": "Blocker"
+    },
+    {
+      "slug": "Bypass",
+      "name": "Bypass"
     }
     ]
 }

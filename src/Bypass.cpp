@@ -214,7 +214,12 @@ struct BypassWidget : VenomWidget {
   void step() override {
     VenomWidget::step();
     Bypass* mod = dynamic_cast<Bypass*>(this->module);
-    if (mod) mod->lights[Bypass::TRIG_LIGHT].setBrightness(mod->bypassed);
+    if (mod) {
+      mod->lights[Bypass::TRIG_LIGHT].setBrightness(mod->bypassed);
+#if defined(METAMODULE)
+      mod->taskWorker.poll();
+#endif
+    }
   }
 
 };
