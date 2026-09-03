@@ -90,19 +90,31 @@ void init(Plugin *p) {
 	// MetaModule build: curated set of modules validated on hardware
 
 	p->addModel(modelVenomAD_ASR);
+	p->addModel(modelVenomAuxClone);
 	p->addModel(modelVenomBenjolinOsc);
+	p->addModel(modelVenomBenjolinGatesExpander);
+	p->addModel(modelVenomBenjolinVoltsExpander);
 	p->addModel(modelVenomBernoulliSwitch);
+	p->addModel(modelVenomBernoulliSwitchExpander);
 	p->addModel(modelVenomCloneMerge);
 	p->addModel(modelVenomCompare2);
 	p->addModel(modelVenomCrossFade3D);
 	p->addModel(modelVenomHQ);
 	p->addModel(modelVenomKnob5);
 	p->addModel(modelVenomLinearBeats);
+	p->addModel(modelVenomLinearBeatsExpander);
 	p->addModel(modelVenomLogic);
 	p->addModel(modelVenomMerge4x2);
 	p->addModel(modelVenomMergeSplit);
 	p->addModel(modelVenomMix4);
 	p->addModel(modelVenomMix4Stereo);
+	p->addModel(modelVenomMixFade);
+	p->addModel(modelVenomMixFade2);
+	p->addModel(modelVenomMixMute);
+	p->addModel(modelVenomMixOffset);
+	p->addModel(modelVenomMixPan);
+	p->addModel(modelVenomMixSend);
+	p->addModel(modelVenomMixSolo);
 	p->addModel(modelVenomMultiMerge);
 	p->addModel(modelVenomMultiSplit);
 	p->addModel(modelVenomNORS_IQ);
@@ -122,6 +134,7 @@ void init(Plugin *p) {
 	p->addModel(modelVenomQuadVCPolarizer);
 	p->addModel(modelVenomReformation);
 	p->addModel(modelVenomRhythmExplorer);
+	p->addModel(modelVenomREXCV);
 	p->addModel(modelVenomSVF);
 	p->addModel(modelVenomShapedVCA);
 	p->addModel(modelVenomSlew);

@@ -155,10 +155,6 @@
       "name": "Poly Offset"
     },
     {
-      "slug": "PolySHASR",
-      "name": "Poly Sample & Hold Analog Shift Register"
-    },
-    {
       "slug": "PolyScale",
       "name": "Poly Scale"
     },
@@ -197,6 +193,58 @@
     {
       "slug": "PolyPrune",
       "name": "Poly Prune"
+    },
+    {
+      "slug": "AuxClone",
+      "name": "Auxilliary Clone Expander"
+    },
+    {
+      "slug": "BenjolinGatesExpander",
+      "name": "Benjolin Gates Expander"
+    },
+    {
+      "slug": "BenjolinVoltsExpander",
+      "name": "Benjolin Volts Expander"
+    },
+    {
+      "slug": "BernoulliSwitchExpander",
+      "name": "Bernoulli Switch Expander"
+    },
+    {
+      "slug": "LinearBeatsExpander",
+      "name": "Linear Beats Expander"
+    },
+    {
+      "slug": "MixFade",
+      "name": "Mix Fade Expander"
+    },
+    {
+      "slug": "MixFade2",
+      "name": "Mix Fade 2 Expander"
+    },
+    {
+      "slug": "MixMute",
+      "name": "Mix Mute Expander"
+    },
+    {
+      "slug": "MixOffset",
+      "name": "Mix Offset Expander"
+    },
+    {
+      "slug": "MixPan",
+      "name": "Mix Pan Expander"
+    },
+    {
+      "slug": "MixSend",
+      "name": "Mix Aux Send Expander"
+    },
+    {
+      "slug": "MixSolo",
+      "name": "Mix Solo Expander"
+    },
+    {
+      "slug": "REXCV",
+      "name": "Rhythm Explorer CV Expander"
     }
     ]
 }
