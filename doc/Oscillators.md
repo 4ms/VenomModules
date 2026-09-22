@@ -344,6 +344,7 @@ A fully polyphonic implementation of the VCV RANDOM CV generator with independen
 
 ### Summary of differences from the VCV Random module
 - All Venom Random inputs and outputs are polyphonic. The VCV module only supports polyphony at the random outputs and the External Data input.
+- Added a context menu option to directly set the polyphony channel count, overriding the value computed from the inputs.
 - The VCV External input has been renamed Data input for Venom.
 - The Random spread control applies to external data input as well as internally generated random values. VCV ignores the Random spread when using external data.
 - Each Venom random output has its own independent shape control. VCV uses a single shared Shape control for all random outputs.
