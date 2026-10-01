@@ -92,8 +92,6 @@ struct BayOutputModule : BayModule {
   int bayOutputType = 0;
   bool zeroChannel = false;
   
-  dsp::ClockDivider clockDivider;
-
   void process(const ProcessArgs& args) override {
     VenomModule::process(args);
     if (!srcMod && srcId >= 0) { // (Re)establish link when loading
@@ -118,8 +116,6 @@ struct BayOutputModule : BayModule {
       srcId = -1;
       srcMod = NULL;
     }
-    if (clockDivider.process())
-      propagateSrcLabels();
   }  
 
   json_t* dataToJson() override {
@@ -199,13 +195,14 @@ struct BayOutputModule : BayModule {
   }
   
   void propagateSrcLabels() {
+    BayInput* tempSrcMod = srcMod && srcId>=0 && sources.count(srcId) ? srcMod : NULL;
     for (int i=0; i<OUTPUTS_LEN; i++) {
       PortInfo* oi = outputInfos[i];
       PortExtension* oe = &outputExtensions[i];
       bool propagate = (oi->name == oe->factoryName);
-      if (srcMod) {
-        if (oe->factoryName != srcMod->inputInfos[i]->name) {
-          oe->factoryName = srcMod->inputInfos[i]->name;
+      if (tempSrcMod) {
+        if (oe->factoryName != tempSrcMod->inputInfos[i]->name) {
+          oe->factoryName = tempSrcMod->inputInfos[i]->name;
           if (propagate)
             oi->name = oe->factoryName;
         }
@@ -241,6 +238,12 @@ struct BayOutputModuleWidget : VenomWidget {
     BayOutputModule* thisMod = static_cast<BayOutputModule*>(this->module);
     thisMod->appendWidgetContextMenu(menu);
     VenomWidget::appendContextMenu(menu);
+  }
+  
+  void step() override {
+    VenomWidget::step();
+    if (module)
+      static_cast<BayOutputModule*>(module)->propagateSrcLabels();
   }
 
 };
