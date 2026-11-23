@@ -96,6 +96,17 @@ target_sources(Venom
     # ${SOURCE_DIR}/src/Recurse.cpp
     # ${SOURCE_DIR}/src/RecurseStereo.cpp
 
+    ${SOURCE_DIR}/src/BoundedVCO.cpp
+    ${SOURCE_DIR}/src/DASE.cpp
+    ${SOURCE_DIR}/src/EnvelopeFactory.cpp
+    ${SOURCE_DIR}/src/LinearMerge.cpp
+    ${SOURCE_DIR}/src/LinearMergeExpander.cpp
+    ${SOURCE_DIR}/src/Ratio.cpp
+    ${SOURCE_DIR}/src/Random.cpp
+    ${SOURCE_DIR}/src/SpreadMerge.cpp
+    ${SOURCE_DIR}/src/SpreadMergeExpander.cpp
+    ${SOURCE_DIR}/src/StereoMergeSplit.cpp
+
     ${SOURCE_DIR}/src/plugin.cpp
 )
 

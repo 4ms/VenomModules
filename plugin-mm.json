@@ -15,6 +15,46 @@
       "name": "Bernoulli Switch"
     },
     {
+      "slug": "BoundedVCO",
+      "name": "Bounded VCO"
+	},
+    {
+      "slug": "DASE",
+      "name": "DASE"
+	},
+    {
+      "slug": "Random",
+      "name": "Random"
+	},
+    {
+      "slug": "Ratio",
+      "name": "Ratio"
+	},
+    {
+      "slug": "EnvelopeFactory",
+      "name": "Envelope Factory"
+	},
+    {
+      "slug": "LinearMerge",
+      "name": "Linear Merge"
+	},
+    {
+      "slug": "LinearMergeExpander",
+      "name": "Linear Merge Expander"
+	},
+    {
+      "slug": "SpreadMerge",
+      "name": "Spread Merge"
+    },
+    {
+      "slug": "SpreadMergeExpander",
+      "name": "Spread Merge Expander"
+    },
+    {
+      "slug": "StereoMergeSplit",
+      "name": "Stereo Merge Split"
+	},
+    {
       "slug": "HQ",
       "name": "HQ - Harmonic Quantizer"
     },

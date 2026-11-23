@@ -30,16 +30,23 @@ void init(Plugin *p) {
 #ifndef METAMODULE
 	// Requires Rack expander chains
 	p->addModel(modelVenomBlocker);
+#endif
+	p->addModel(modelVenomBoundedVCO);
+#ifndef METAMODULE
 	// Requres accessing other modules
 	p->addModel(modelVenomBypass);
 #endif
 	p->addModel(modelVenomCloneMerge);
 	p->addModel(modelVenomCompare2);
 	p->addModel(modelVenomCrossFade3D);
+	p->addModel(modelVenomDASE);
+	p->addModel(modelVenomEnvelopeFactory);
 	p->addModel(modelVenomHQ);
 	p->addModel(modelVenomKnob5);
 	p->addModel(modelVenomLinearBeats);
 	p->addModel(modelVenomLinearBeatsExpander);
+	p->addModel(modelVenomLinearMerge);
+	p->addModel(modelVenomLinearMergeExpander);
 	p->addModel(modelVenomLogic);
 	p->addModel(modelVenomMerge4x2);
 	p->addModel(modelVenomMergeSplit);
@@ -78,6 +85,8 @@ void init(Plugin *p) {
 	p->addModel(modelVenomPolyUnison);
 	p->addModel(modelVenomPush5);
 	p->addModel(modelVenomQuadVCPolarizer);
+	p->addModel(modelVenomRandom);
+	p->addModel(modelVenomRatio);
 #ifndef METAMODULE
 	// TODO: test with 4-voice poly
 	p->addModel(modelVenomRecurse);
@@ -90,6 +99,9 @@ void init(Plugin *p) {
 	p->addModel(modelVenomSlew);
 	p->addModel(modelVenomSphereToXYZ);
 	p->addModel(modelVenomSplit4x2);
+	p->addModel(modelVenomSpreadMerge);
+	p->addModel(modelVenomSpreadMergeExpander);
+	p->addModel(modelVenomStereoMergeSplit);
 	p->addModel(modelVenomThru);
 	p->addModel(modelVenomVCAMix4);
 	p->addModel(modelVenomVCAMix4Stereo);
