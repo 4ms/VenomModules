@@ -40,7 +40,10 @@ void init(Plugin *p) {
 	p->addModel(modelVenomCompare2);
 	p->addModel(modelVenomCrossFade3D);
 	p->addModel(modelVenomDASE);
+#ifndef METAMODULE
+	// Requires dynamic module re-sizing and adding/removing widgets
 	p->addModel(modelVenomEnvelopeFactory);
+#endif
 	p->addModel(modelVenomHQ);
 	p->addModel(modelVenomKnob5);
 	p->addModel(modelVenomLinearBeats);

@@ -31,10 +31,6 @@
       "name": "Ratio"
 	},
     {
-      "slug": "EnvelopeFactory",
-      "name": "Envelope Factory"
-	},
-    {
       "slug": "LinearMerge",
       "name": "Linear Merge"
 	},

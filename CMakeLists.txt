@@ -98,7 +98,6 @@ target_sources(Venom
 
     ${SOURCE_DIR}/src/BoundedVCO.cpp
     ${SOURCE_DIR}/src/DASE.cpp
-    ${SOURCE_DIR}/src/EnvelopeFactory.cpp
     ${SOURCE_DIR}/src/LinearMerge.cpp
     ${SOURCE_DIR}/src/LinearMergeExpander.cpp
     ${SOURCE_DIR}/src/Ratio.cpp
